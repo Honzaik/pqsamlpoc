@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>xyz.honzaik</groupId>
-    <artifactId>idpexample</artifactId>
+    <artifactId>pqsamlpoc</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>idpexample</name>
+    <name>pqsamlpoc</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -112,14 +112,6 @@
             <version>2.10.1</version>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -142,14 +134,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
-<!--                <configuration>-->
-<!--                    <webResources>-->
-<!--                        <resource>-->
-<!--                            &lt;!&ndash; this is relative to the pom.xml directory &ndash;&gt;-->
-<!--                            <directory>src/main/resources</directory>-->
-<!--                        </resource>-->
-<!--                    </webResources>-->
-<!--                </configuration>-->
             </plugin>
         </plugins>
         <finalName>ROOT</finalName>
@@ -167,81 +151,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <profiles>
-        <profile>
-            <id>benchmarkjar</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>3.2.2</version>
-                        <configuration>
-                            <mainClass>xyz.honzaik.idpexample.tools.Benchmark</mainClass>
-                            <layout>JAR</layout>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-                <finalName>BenchmarkSigs</finalName>
-            </build>
-        </profile>
-        <profile>
-            <id>BenchmarkKEMsjar</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>3.2.2</version>
-                        <configuration>
-                            <mainClass>xyz.honzaik.idpexample.tools.BenchmarkKEMs</mainClass>
-                            <layout>JAR</layout>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-                <finalName>BenchmarkKEMs</finalName>
-            </build>
-        </profile>
-        <profile>
-            <id>BenchmarkSAMLjar</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <version>3.2.2</version>
-                        <configuration>
-                            <mainClass>xyz.honzaik.idpexample.tools.BenchmarkSAML</mainClass>
-                            <layout>JAR</layout>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-                <finalName>BenchmarkSAML</finalName>
-            </build>
-        </profile>
-    </profiles>
-
 
 </project>
