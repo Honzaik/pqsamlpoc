@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SAML SSO demo configurator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center p-1">
+    <h1>SAML SSO demo configurator</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6 text-start">
+                <form id="configForm">
+                    <fieldset>
+                        <legend>Common settings</legend>
+                        <div class="mb-3">
+                            <label for="kemSelect" class="form-label">XML public key encryption algorithm</label>
+                            <select id="kemSelect" name="kemSelect" class="form-select">
+                                #foreach ($pke in $supportedPKEs)
+                                    #set($xmlId = $constants.getPKEXMLID($pke))
+                                    <option value="$xmlId" #if ($xmlId.equals($config.getProperty("sp:kemAlg"))) selected #end>$pke</option>
+                                #end
+                            </select>
+                        </div>
+                        #set ($disableExtraKem = ($config.getProperty("idp:useHybridEnc").equals("false")))
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="kemHybridCheckbox" name="kemHybridCheckbox" #if (!$disableExtraKem) checked #end>
+                            <label class="form-check-label" for="kemHybridCheckbox">Use Hybrid PKE</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="extraKemSelect" class="form-label">XML public key encryption algorithm (extra)</label>
+                            <select id="extraKemSelect" name="extraKemSelect" class="form-select" #if ($disableExtraKem) disabled #end>
+                                #foreach ($pke in $supportedPKEs)
+                                    #set($xmlId = $constants.getPKEXMLID($pke))
+                                    <option value="$xmlId" #if ($xmlId.equals($config.getProperty("sp:kemAlgExtra"))) selected #end>$pke</option>
+                                #end
+                            </select>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>IdP settings</legend>
+                        <div class="mb-3">
+                            <label for="idpHost" class="form-label">Host URL</label>
+                            <input type="url" class="form-control" id="idpHost" name="idpHost" value="$config.getProperty("idp:hostURL")">
+                        </div>
+                        <div class="mb-3">
+                            <label for="idpSigSelect" class="form-label">XML signature algorithm</label>
+                            <select id="idpSigSelect" name="idpSigSelect" class="form-select">
+                                #foreach ($signature in $supportedSignatures)
+                                    #set($xmlId = $constants.getSignatureXMLID($signature))
+                                    <option value="$xmlId" #if ($xmlId.equals($config.getProperty("idp:signatureAlg"))) selected #end>$signature</option>
+                                #end
+                            </select>
+                        </div>
+                        #set ($disableIdpExtraSig = ($config.getProperty("idp:useHybridSig").equals("false")))
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="idpHybridCheckbox" name="idpHybridCheckbox" #if (!$disableIdpExtraSig) checked #end>
+                            <label class="form-check-label" for="idpHybridCheckbox">Use Hybrid signatures</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="idpExtraSigSelect" class="form-label">XML signature algorithm (extra)</label>
+                            <select id="idpExtraSigSelect" name="idpExtraSigSelect" class="form-select" #if ($disableIdpExtraSig) disabled #end>
+                                #foreach ($signature in $supportedSignatures)
+                                    #set($xmlId = $constants.getSignatureXMLID($signature))
+                                    <option value="$xmlId" #if ($xmlId.equals($config.getProperty("idp:signatureAlgExtra"))) selected #end>$signature</option>
+                                #end
+                            </select>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>SP settings</legend>
+                        <div class="mb-3">
+                            <label for="spHost" class="form-label">Host URL</label>
+                            <input type="url" class="form-control" id="spHost" name="spHost" value="$config.getProperty("sp:hostURL")">
+                        </div>
+                        <div class="mb-3">
+                            <label for="spSigSelect" class="form-label">XML signature algorithm</label>
+                            <select id="spSigSelect" name="spSigSelect" class="form-select">
+                                #foreach ($signature in $supportedSignatures)
+                                    #set($xmlId = $constants.getSignatureXMLID($signature))
+                                    <option value="$xmlId" #if ($xmlId.equals($config.getProperty("sp:signatureAlg"))) selected #end>$signature</option>
+                                #end
+                            </select>
+                        </div>
+                        #set ($disableSpExtraSig = ($config.getProperty("sp:useHybridSig").equals("false")))
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="spHybridCheckbox" name="spHybridCheckbox" #if (!$disableSpExtraSig) checked #end>
+                            <label class="form-check-label" for="spHybridCheckbox">Use Hybrid signatures</label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="spExtraSigSelect" class="form-label">XML signature algorithm (extra)</label>
+                            <select id="spExtraSigSelect" name="spExtraSigSelect" class="form-select" #if ($disableSpExtraSig) disabled #end>
+                                #foreach ($signature in $supportedSignatures)
+                                    #set($xmlId = $constants.getSignatureXMLID($signature))
+                                    <option value="$xmlId" #if ($xmlId.equals($config.getProperty("sp:signatureAlgExtra"))) selected #end>$signature</option>
+                                #end
+                            </select>
+                        </div>
+                    </fieldset>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="spinner-border align-middle d-none" id="loading" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <span id="result"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <pre id="error-content" class="text-start text-black-50"></pre>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const hybridKemCheckbox = document.getElementById("kemHybridCheckbox");
+        const extraKemSelect = document.getElementById("extraKemSelect");
+        hybridKemCheckbox.addEventListener("change", (e) => {
+           if (e.currentTarget.checked) {
+                extraKemSelect.disabled = false;
+           } else {
+               extraKemSelect.disabled = true;
+           }
+        });
+
+        const idpHybridCheckbox = document.getElementById("idpHybridCheckbox");
+        const idpExtraSigSelect = document.getElementById("idpExtraSigSelect");
+        idpHybridCheckbox.addEventListener("change", (e) => {
+            if (e.currentTarget.checked) {
+                idpExtraSigSelect.disabled = false;
+            } else {
+                idpExtraSigSelect.disabled = true;
+            }
+        });
+
+        const spHybridCheckbox = document.getElementById("spHybridCheckbox");
+        const spExtraSigSelect = document.getElementById("spExtraSigSelect");
+        spHybridCheckbox.addEventListener("change", (e) => {
+            if (e.currentTarget.checked) {
+                spExtraSigSelect.disabled = false;
+            } else {
+                spExtraSigSelect.disabled = true;
+            }
+        });
+
+        const configForm = document.getElementById("configForm");
+        configForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const loading = document.getElementById("loading");
+            loading.classList.remove("d-none");
+            const resultEl = document.getElementById("result");
+            resultEl.textContent = "";
+            const formData = new FormData(configForm);
+            fetch("", {
+                method: "POST",
+                cache: "no-cache",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            }).then(async resp => {
+                if (!resp.ok) {
+                    document.getElementById("error-content").textContent = await resp.text();
+                    throw new Error("Response not ok :(.")
+                }
+               return resp.json();
+            }).then(resultJson => {
+                if (resultJson.success) {
+                    resultEl.textContent = "Saved.";
+                } else {
+                    resultEl.textContent = "Error occurred.";
+                }
+            }).catch(err => {
+                console.error(err);
+                resultEl.textContent = "Error occurred: " + err;
+            }).finally(() => {
+                loading.classList.add("d-none");
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

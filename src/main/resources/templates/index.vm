@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PQ SAML SSO Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<div class="container p-1">
+   <div class="row">
+       <h1 class="text-center fw-bold">Post-quantum SAML Single Sign-On demo</h1>
+       <hr>
+       <h4>Begin demonstration by clicking <a href="sp/secret">here</a> (accessing a secret resource).</h4>
+       <h4>To configure the demo click <a href="config" target="_blank">here</a>.</h4>
+       <h4>To reset the demo click <a href="reset" id="reset" target="_blank">here</a>.</h4>
+       <div class="spinner-border align-middle d-none" id="loading" role="status">
+           <span class="visually-hidden">Loading...</span>
+       </div>
+       <span id="result"></span>
+       <div class="row">
+           <pre id="error-content" class="text-start text-black-50"></pre>
+       </div>
+   </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const resetLink = document.getElementById("reset");
+        resetLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            const loading = document.getElementById("loading");
+            loading.classList.remove("d-none");
+            const resultEl = document.getElementById("result");
+            resultEl.textContent = "";
+            fetch("$spReset", {
+                method: "GET",
+                cache: "no-cache",
+                credentials: "include",
+                mode: "cors",
+            }).then(async resp => {
+                if (!resp.ok) {
+                    document.getElementById("error-content").textContent = await resp.text();
+                    throw new Error("Response not ok :(.")
+                }
+                return resp.text();
+            }).then(resultText => {
+                //resultEl.textContent = resultText;
+            }).catch(err => {
+                console.error(err);
+                resultEl.textContent = "Error occurred: " + err;
+            }).finally(() => {
+                loading.classList.add("d-none");
+            });
+
+            fetch("$idpReset", {
+                method: "GET",
+                cache: "no-cache",
+                credentials: "include",
+                mode: "cors"
+            }).then(async resp => {
+                if (!resp.ok) {
+                    document.getElementById("error-content").textContent = await resp.text();
+                    throw new Error("Response not ok :(.")
+                }
+                return resp.text();
+            }).then(resultText => {
+                //resultEl.textContent = resultText;
+            }).catch(err => {
+                console.error(err);
+                resultEl.textContent = "Error occurred: " + err;
+            }).finally(() => {
+                loading.classList.add("d-none");
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

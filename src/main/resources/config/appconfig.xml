@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <!-- IDP CONFIG START -->
+    <entry key="idp:hostURL">http://localhost:8090</entry>
+    <entry key="idp:keyStoreFilename">idp_MLDSA44andECDSAP256_kyber512_dil2.p12</entry>
+    <entry key="idp:keyStorePassword">password</entry>
+    <entry key="idp:signatureAlg">http://www.w3.org/2023/02/xmldsig-pqc-composites#mldsa44andecdsap256</entry>
+    <entry key="idp:signatureAlgExtra">http://www.w3.org/2023/02/xmldsig-pqc#dilithium</entry>
+    <entry key="idp:referenceDigestAlg">http://www.w3.org/2007/05/xmldsig-more#sha3-512</entry>
+    <entry key="idp:useHybridSig">true</entry>
+    <entry key="idp:useHybridEnc">true</entry>
+    <entry key="idp:verifyHybridSig">false</entry>
+    <!-- IDP CONFIG END -->
+    <!-- SP CONFIG START -->
+    <entry key="sp:hostURL">http://localhost:8090</entry>
+    <entry key="sp:keyStoreFilename">sp_MLDSA44andECDSAP256_kyber512_dil2.p12</entry>
+    <entry key="sp:keyStorePassword">password</entry>
+    <entry key="sp:signatureAlg">http://www.w3.org/2023/02/xmldsig-pqc-composites#mldsa44andecdsap256</entry>
+    <entry key="sp:signatureAlgExtra">http://www.w3.org/2023/02/xmldsig-pqc#dilithium</entry>
+    <entry key="sp:referenceDigestAlg">http://www.w3.org/2007/05/xmldsig-more#sha3-512</entry>
+    <entry key="sp:useHybridSig">false</entry>
+    <entry key="sp:useHybridEnc">true</entry>
+    <entry key="sp:verifyHybridSig">false</entry>
+    <entry key="sp:kemAlg">http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p</entry>
+    <entry key="sp:kemAlgExtra">http://www.w3.org/2023/02/xmlenc-pqc#kyber</entry>
+    <!-- SP CONFIG END -->
+</properties>
