@@ -47,3 +47,20 @@ mvn war:war
 ```
 
 The resulting WAR is located at target/ROOT.war
+
+# POC usage
+After deploying the WAR on a Tomcat server. The index webpage looks like this https://i.imgur.com/lcZHi3d.png. 
+
+Before clicking on the first link (beginning the demo), we need to generate the keys/certificates using the demo configurator (second link). 
+
+The configurator page looks like this https://i.imgur.com/oFJhBPj.png. 
+
+"Common settings" is regarding the XML encryption used to encrypt the Assertion. If hybrid checkbox is checked, then the (extra) algorithm is used in hybrid mode with the first one.
+
+IdP settings asks about the IDP domain (for redirect purposes, can be the same as SP) and the signature algorithms the IdP will use to sign the Response.
+
+SP settings same set of settings but for the SP.
+
+After clicking submit, a loading wheel will appear and it will take a few seconds for everything to get generated. After the process is done, "Saved." should appear next to the submit button.
+
+After that, the demo is ready to be ran using the first link on the index page.
